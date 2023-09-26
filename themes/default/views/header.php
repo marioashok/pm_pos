@@ -134,7 +134,7 @@
                     </ul>
                 </li>
 
-                <li class="treeview mm_categories mm_subcategories">
+                <li class="treeview mm_categories mm_subcategories mm_products">
                     <a href="#">
                         <i class="fa fa-folder"></i>
                         <span><?= lang('PRODUCT CATALOG'); ?></span>
@@ -147,6 +147,8 @@
                         <li id="subcategories_index"><a href="<?= site_url('subcategories'); ?>"><i class="fa fa-circle-o"></i> <?= lang('LIST SUBCATEGORY'); ?></a></li>
                         <li id="subcategories_add"><a href="<?= site_url('subcategories/add'); ?>"><i class="fa fa-circle-o"></i> <?= lang('ADD SUBCATEGORY'); ?></a></li>
                         <li class="divider"></li>
+                        <li id="products_index"><a href="<?= site_url('products'); ?>"><i class="fa fa-circle-o"></i> <?= lang('LIST PRODUCT'); ?></a></li>
+                        <li id="products_add"><a href="<?= site_url('products/add'); ?>"><i class="fa fa-circle-o"></i> <?= lang('ADD PRODUCT'); ?></a></li>
                     </ul>
                 </li>
 
