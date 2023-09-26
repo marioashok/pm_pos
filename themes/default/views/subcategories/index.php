@@ -1,5 +1,22 @@
 <br><br>
 <h4 class="text-center"><a href="<?php echo site_url('subcategories?category_id=' . $this->input->get('category_id')); ?>">Subcategories</a></h4>
+<style>
+    .zoomed-image {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* Ensures it's on top of other elements */
+    }
+
+  
+</style>
+
 <?php
 // Get search term from the request
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
@@ -61,9 +78,13 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                                 <?php foreach ($currentResults as $result) : ?>
                                     <tr>
                                         <td><?php echo $result->name; ?></td>
+                                        
                                         <td style="max-width:20px">
-                                            <img src="../../pos/uploads/subcategories/thumbs/<?php echo $result->image; ?>" alt="Image" class="img-thumbnail">
-                                        </td>
+    <a href="#" class="zoom-trigger">
+        <img src="../../pos/uploads/subcategories/thumbs/<?php echo $result->image; ?>" alt="Image" class="img-thumbnail">
+    </a>
+</td>
+
                                         <td><?php echo $result->code; ?></td>
                                         <td><?php echo $result->discount; ?></td>
                                         <td><?php echo $result->type_indicator; ?></td>
@@ -128,5 +149,41 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
         });
     });
 </script>
+
+<script>
+    $(document).ready(function () {
+        // Handle image zoom when clicking on the image
+        $(".zoom-trigger").click(function (e) {
+            e.preventDefault(); // Prevent the link from navigating
+
+            // Create a copy of the clicked image
+            var $originalImage = $(this).find("img");
+            var $zoomedImage = $originalImage.clone();
+
+            // Define the desired width and height for the zoomed image
+            var zoomedWidth = $originalImage.width() * 1.5; // 50% larger than the original
+            var zoomedHeight = $originalImage.height() * 1.5; // 50% larger than the original
+
+            // Set the width and height for the zoomed image
+            $zoomedImage.css({
+                width: zoomedWidth + "px",
+                height: zoomedHeight + "px"
+            });
+
+            // Create a div to display the zoomed image
+            var $zoomedContainer = $("<div class='zoomed-image'></div>");
+            $zoomedContainer.append($zoomedImage);
+
+            // Add the zoomed image container to the body
+            $("body").append($zoomedContainer);
+
+            // Close the zoomed image when clicking anywhere on it
+            $zoomedContainer.click(function () {
+                $(this).remove();
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
