@@ -1,0 +1,144 @@
+<?php (defined('BASEPATH')) or exit('No direct script access allowed'); ?>
+
+<script src="<?= $assets ?>plugins/highchart/highcharts.js"></script>
+
+<?php
+if ($chartData) {
+    foreach ($chartData as $month_sale) {
+        $months[]   = date('M-Y', strtotime($month_sale->month));
+        $sales[]    = $month_sale->total;
+        $tax[]      = $month_sale->tax;
+        $discount[] = $month_sale->discount;
+    }
+} else {
+    $months[]   = '';
+    $sales[]    = '';
+    $tax[]      = '';
+    $discount[] = '';
+}
+?>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+            return {
+                radialGradient: {cx: 0.5, cy: 0.3, r: 0.7},
+                stops: [[0, color], [1, Highcharts.Color(color).brighten(-0.3).get('rgb')]]
+            };
+        });
+        <?php if ($chartData) { ?>
+        $('#chart').highcharts({
+            chart: { },
+            credits: { enabled: false },
+            exporting: { enabled: false },
+            title: { text: '' },
+            xAxis: { categories: [<?php foreach ($months as $month) {
+    echo "'" . $month . "', ";
+} ?>] },
+            yAxis: { min: 0, title: "" },
+            tooltip: {
+                shared: true,
+                followPointer: true,
+                headerFormat: '<div class="well well-sm" style="margin-bottom:0;"><span style="font-size:12px">{point.key}</span><table class="table table-striped" style="margin-bottom:0;">',
+                pointFormat: '<tr><td style="color:{series.color};padding:4px">{series.name}: </td>' +
+                '<td style="color:{series.color};padding:4px;text-align:right;"> <b>{point.y}</b></td></tr>',
+                footerFormat: '</table></div>',
+                useHTML: true, borderWidth: 0, shadow: false,
+                style: {fontSize: '14px', padding: '0', color: '#000000'}
+            },
+            legend: {
+                useHTML: true,
+                style: { direction: "<?= $Settings->rtl ? 'rtl' : 'ltr'; ?>" }
+            },
+            plotOptions: {
+                series: { stacking: 'normal' }
+            },
+            series: [{
+                type: 'column',
+                name: '<?= $this->lang->line('tax'); ?>',
+                data: [<?= implode(', ', $tax); ?>]
+            },
+            {
+                type: 'column',
+                name: '<?= $this->lang->line('discount'); ?>',
+                data: [<?= implode(', ', $discount); ?>]
+            },
+            {
+                type: 'column',
+                name: '<?= $this->lang->line('sales'); ?>',
+                data: [<?= implode(', ', $sales); ?>]
+            }
+            ]
+        });
+        <?php } ?>
+
+});
+
+</script>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-success">
+                <div class="box-header">
+                    <h3 class="box-title"><?= lang('quick_links'); ?></h3>
+                </div>
+                <div class="box-body">
+                    <?php if ($this->session->userdata('store_id')) { ?>
+                    <a class="btn btn-app" href="<?= site_url('pos'); ?>">
+                        <i class="fa fa-th"></i> <?= lang('pos'); ?>
+                    </a>
+                    <?php } ?>
+                  
+                    <a class="btn btn-app" href="<?= site_url('gift_cards'); ?>">
+                        <i class="fa fa-credit-card"></i> <?= lang('gift_cards'); ?>
+                    </a>
+                    <?php if ($Admin) { ?>
+                    <a class="btn btn-app" href="<?= site_url('settings'); ?>">
+                        <i class="fa fa-cogs"></i> <?= lang('settings'); ?>
+                    </a>
+                    <a class="btn btn-app" href="<?= site_url('reports'); ?>">
+                        <i class="fa fa-bar-chart-o"></i> <?= lang('reports'); ?>
+                    </a>
+                    <a class="btn btn-app" href="<?= site_url('users'); ?>">
+                        <i class="fa fa-users"></i> <?= lang('users'); ?>
+                    </a>
+                    <?php if ($this->db->dbdriver != 'sqlite3') { ?>
+                    <a class="btn btn-app" href="<?= site_url('settings/backups'); ?>">
+                        <i class="fa fa-database"></i> <?= lang('backups'); ?>
+                    </a>
+                    <?php } ?>
+                    <!-- <a class="btn btn-app" href="<?= site_url('settings/updates'); ?>">
+                        <i class="fa fa-upload"></i> <?= lang('updates'); ?>
+                    </a> -->
+                    <?php } ?>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title"><?= lang('sales_chart'); ?></h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- <div id="chart" style="height:300px;"></div> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title"><?= lang('top_products') . ' (' . date('F Y') . ')'; ?></h3>
+                        </div>
+                        <div class="box-body">
+                            <!-- <div id="chart2" style="height:300px;"></div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
