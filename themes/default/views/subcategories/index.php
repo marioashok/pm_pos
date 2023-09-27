@@ -77,7 +77,7 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                             <tbody>
                                 <?php foreach ($currentResults as $result) : ?>
                                     <tr>
-                                        <td><?php echo $result->name; ?></td>
+                                        <td><a href="<?php echo site_url("products?subcategory_id=$result->id&category_id=$result->category_id"); ?>"><?php echo $result->name; ?></a></td>
                                         
                                         <td style="max-width:20px">
     <a href="#" class="zoom-trigger">
@@ -136,19 +136,26 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
     $(document).ready(function () {
         $("#searchBox").on("keyup", function (event) {
             if (event.key === "Enter") {
-                var value = $(this).val().toLowerCase();
+                var searchValue = $(this).val().trim()  // Trim spaces and convert to lowercase
                 $("#UTable tbody tr").each(function () {
                     var rowText = $(this).text().toLowerCase();
-                    if (rowText.indexOf(value) > -1) {
+                    if (rowText.indexOf(searchValue) > -1) {
                         $(this).show();
                     } else {
                         $(this).hide();
                     }
                 });
             }
+        }).on("paste", function (event) {
+            // Handle paste event to trim the input value
+            setTimeout(function () {
+                var searchValue = $("#searchBox").val().trim();
+                $("#searchBox").val(searchValue);
+            }, 0);
         });
     });
 </script>
+
 
 <script>
     $(document).ready(function () {

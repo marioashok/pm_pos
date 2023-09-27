@@ -144,7 +144,6 @@
                         <li id="categories_index"><a href="<?= site_url('categories'); ?>"><i class="fa fa-circle-o"></i> <?= lang('LIST CATEGORY'); ?></a></li>
                         <li id="categories_add"><a href="<?= site_url('categories/add'); ?>"><i class="fa fa-circle-o"></i> <?= lang('ADD CATEGORY'); ?></a></li>
                         <li class="divider"></li>
-                        <li id="subcategories_index"><a href="<?= site_url('subcategories'); ?>"><i class="fa fa-circle-o"></i> <?= lang('LIST SUBCATEGORY'); ?></a></li>
                         <li id="subcategories_add"><a href="<?= site_url('subcategories/add'); ?>"><i class="fa fa-circle-o"></i> <?= lang('ADD SUBCATEGORY'); ?></a></li>
                         <li class="divider"></li>
                         <li id="products_index"><a href="<?= site_url('products'); ?>"><i class="fa fa-circle-o"></i> <?= lang('LIST PRODUCT'); ?></a></li>

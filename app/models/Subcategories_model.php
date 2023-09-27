@@ -143,35 +143,44 @@ class Subcategories_model extends CI_Model
 
 
     public function getSubcategoriesWithSearch($category_id, $searchTerm) {
-    $this->db->select('*');
-    $this->db->from('subcategories');
-    $this->db->where('category_id', $category_id);
+        $this->db->select('*');
+        $this->db->from('subcategories');
+        $this->db->where('category_id', $category_id);
     
-    // Check if a search term is provided and apply the filter
-    if (!empty($searchTerm)) {
-        $this->db->like('name', $searchTerm); // You can adjust this to search in other columns
+        // Check if a search term is provided and apply the filter
+        if (!empty($searchTerm)) {
+            $this->db->group_start();
+            $this->db->like('name', $searchTerm);
+            $this->db->or_like('code', $searchTerm);
+            // You can add more columns to search in here using additional or_like calls
+            $this->db->group_end();
+        }
+    
+        $query = $this->db->get();
+    
+        return $query->result();
     }
     
-    $query = $this->db->get();
-    
-    return $query->result();
-}
 
 public function getSubcategoriesWithSearchAndPagination($category_id, $limit, $offset, $searchTerm) {
     $this->db->select('*');
     $this->db->from('subcategories');
     $this->db->where('category_id', $category_id);
-    
+
     // Check if a search term is provided and apply the filter
     if (!empty($searchTerm)) {
-        $this->db->like('name', $searchTerm); // You can adjust this to search in other columns
+        $this->db->group_start();
+        $this->db->like('name', $searchTerm);
+        $this->db->or_like('code', $searchTerm);
+        $this->db->group_end();
     }
-    
+
     $this->db->limit($limit, $offset);
     $query = $this->db->get();
-    
+
     return $query->result();
 }
+
 
 
     
