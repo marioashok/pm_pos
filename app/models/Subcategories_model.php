@@ -45,21 +45,18 @@ class Subcategories_model extends CI_Model
 
     public function getAllSubcategories($category_id)
     {
-        $this->db->select('subcategories.*, categories.name AS category_name');
-        $this->db->from('subcategories');
-        $this->db->join('categories', 'subcategories.category_id = categories.id');
-        $this->db->where('subcategories.category_id', $category_id);
+
+        $sql = "SELECT subcategories.*, categories.name AS category_name
+        FROM subcategories
+        INNER JOIN categories
+        ON subcategories.category_id = categories.id
+        WHERE subcategories.category_id = '$category_id'
+        ORDER BY subcategories.type_indicator DESC;
+        ";
         
-        $q = $this->db->get();
+        $query = $this->db->query($sql);
         
-        if ($q->num_rows() > 0) {
-            foreach ($q->result() as $row) {
-                $data[] = $row;
-            }
-            return $data;
-        }
-        
-        return false;
+        return $query->result();
     }
     
 
@@ -146,6 +143,8 @@ class Subcategories_model extends CI_Model
         $this->db->select('*');
         $this->db->from('subcategories');
         $this->db->where('category_id', $category_id);
+        $this->db->order_by('subcategories.type_indicator', 'DESC');
+
     
         // Check if a search term is provided and apply the filter
         if (!empty($searchTerm)) {
@@ -166,6 +165,7 @@ public function getSubcategoriesWithSearchAndPagination($category_id, $limit, $o
     $this->db->select('*');
     $this->db->from('subcategories');
     $this->db->where('category_id', $category_id);
+    $this->db->order_by('subcategories.type_indicator', 'DESC');
 
     // Check if a search term is provided and apply the filter
     if (!empty($searchTerm)) {

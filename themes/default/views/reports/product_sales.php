@@ -28,8 +28,10 @@ $monthName = $dateObj->format('F');
 <h3 class="box-title"><strong>Product Sales Report</strong> for <?php echo $monthName . " " . $year; ?></h3>
 
 <!-- Add the search box here -->
+<div class="container">
 <div class="form-group" style="margin-top: 10px;">
     <input type="text" id="searchBox" placeholder="Search..." class="form-control">
+</div>
 </div>
 
 <div class="form-group" style="">

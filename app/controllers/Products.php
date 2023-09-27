@@ -53,6 +53,19 @@ class Products extends MY_Controller
 
     }
 
+    public function product_by_design()
+    {
+        $this->data['error']      = (validation_errors() ? validation_errors() : $this->session->flashdata('error'));
+        $this->data['page_title'] = $this->lang->line('PRODUCT BY DESIGN');
+
+        $bc                       = [['link' => '#', 'page' => lang('PRODUCT BY DESIGN')], ['link' => '#', 'page' => lang('PRODUCT BY DESIGN')]];
+
+        $meta                     = ['page_title' => lang('PRODUCT BY DESIGN'), 'bc' => $bc];
+
+        $this->page_construct('products/product_by_design', $this->data, $meta);
+
+    }
+
 
 
 

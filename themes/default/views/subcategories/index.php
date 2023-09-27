@@ -77,7 +77,12 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                             <tbody>
                                 <?php foreach ($currentResults as $result) : ?>
                                     <tr>
+                                    <?php if($result->type_indicator=="1" or $result->type_indicator=="2" or $result->type_indicator=="3"): ?>
+                                        <td><a href="<?php echo site_url("products/product_by_design?subcategory_id=$result->id&category_id=$result->category_id"); ?>"><?php echo $result->name; ?></a></td>
+                                    <?php else: ?>
                                         <td><a href="<?php echo site_url("products?subcategory_id=$result->id&category_id=$result->category_id"); ?>"><?php echo $result->name; ?></a></td>
+                                        
+                                    <?php endif; ?>
                                         
                                         <td style="max-width:20px">
     <a href="#" class="zoom-trigger">
